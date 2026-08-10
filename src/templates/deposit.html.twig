@@ -1,0 +1,20 @@
+{% extends 'layouts/step-property.html.twig' %}
+
+{% block title %}123 Loger{% endblock %}
+
+{% block main %}
+    
+    <h1>Quel est le dépôt <br> de garantie ? </h1>
+
+    <zb-input
+        name="{{ field_name(form.deposit) }}" 
+        value="{{ field_value(form.deposit) }}"
+        type="number"
+        unit="€"
+        placeholder="Montant du dépot de garantie"
+        required
+        max="{{max}}"
+        message="{{ '{max: \'Montant de dépôt de garantie trop élevé (' ~ (field_value(form.furnished) ? "2" : "1") ~ ' mois de loyer hors charges pour logement ' ~ (field_value(form.furnished) ? '' : 'non') ~ ' meublé \'}' }}"
+    ></zb-input>
+
+{% endblock %}
