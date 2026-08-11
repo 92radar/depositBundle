@@ -32,8 +32,8 @@ interface PropertyInterface
     public function getRent(): ?int;
     public function getCharges(): ?int;
     public function isFurnished(): ?bool;
-    public function getExtrafields(): ?int;
-    public function setExtrafields(?int $extrafields): self;
+    public function getExtrafields(): ?array;
+    public function setExtrafields(?array $extrafields): self;
     public function getState(): ?string;
     public function setState(string $state): self;
     public function getOwner(): ?UserInterface;
