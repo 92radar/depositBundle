@@ -52,8 +52,8 @@ class PropertyController extends AbstractController
         $deposit = $property->getRent() - $property->getCharges();
         $max = $property->isFurnished() ? $deposit * 2 : $deposit;
 
-        if ($property->getDeposit() === null) {
-            $form->get('deposit')->setData($max);
+        if ($property->getExtrafields() === null) {
+            $form->get('extrafields')->setData($max);
         }
 
         return $this->render('property/deposit.html.twig', [
