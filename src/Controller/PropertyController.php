@@ -22,7 +22,7 @@ class PropertyController extends AbstractController
     #[Route('/property/{uid}/deposit/', name: 'property.deposit', priority: 1)]
     #[IsGranted(PropertyVoter::EDIT, subject: 'property')]
     public function deposit(
-    #[MapEntity(mapping: ['uid' => 'uid'])] PropertyInterface $property,
+    #[MapEntity(class: \App\Entity\Property::class, mapping: ['uid' => 'uid'])] PropertyInterface $property,
     Request $request
     ): Response
     {
