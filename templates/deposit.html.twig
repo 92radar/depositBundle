@@ -1,17 +1,17 @@
 {% extends 'layouts/step-property.html.twig' %}
 
-{% block title %}123 Loger{% endblock %}
+{% block title %}{{data.name}}{% endblock %}
 
 {% block main %}
     
-    <h1>Quel est le dépôt <br> de garantie ? </h1>
+    <h1>{{ 'property.deposit.h1'|trans }}</h1>
 
     <zb-input
         name="{{ field_name(form.extrafields) }}" 
         value="{{ field_value(form.extrafields) }}"
         type="number"
         unit="€"
-        placeholder="Montant du dépot de garantie"
+        placeholder='{{ "property.deposit.placeholder"|trans }}'
         required
     ></zb-input>
 
