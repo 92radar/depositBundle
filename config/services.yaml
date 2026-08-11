@@ -1,4 +1,9 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+        
     _92radar\DepositBundle\Controller\PropertyController:
         arguments:
             $em: '@doctrine.orm.entity_manager'
