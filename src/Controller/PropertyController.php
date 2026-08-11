@@ -39,7 +39,14 @@ class PropertyController extends AbstractController
         $form = $this->createForm(PropertyFormType::class, $property);
         $form->handleRequest($request);
 
+        $extrafields = $property->getExtrafields();
+
+
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $extrafields['deposit'] = $form->get('deposit')->getData();
+            $property->setExtrafields($extrafields);
+
             $isSave = $form->get('save')->isClicked();
 
             if ($step === $slug && !$isSave) {
@@ -53,12 +60,17 @@ class PropertyController extends AbstractController
                 : $this->redirectToRoute("property.$nextStep", ['uid' => $uid]);
         }
 
-        $deposit = $property->getRent() - $property->getCharges();
-        $max = $property->isFurnished() ? $deposit * 2 : $deposit;
 
-        if ($property->getExtrafields() === null) {
-            $form->get('extrafields')->setData($max);
-        }
+
+        $default = $property->getRent() - ($property->getCharges() ?? 0);
+        $max = $property->isFurnished() ? $default * 2 : $default;
+
+        $deposit = $default === null 
+            ? $max 
+            : $extrafields['deposit'] ?? null;
+
+        $form->get('deposit')->setData($deposit);
+
 
         return $this->render('@DepositBundle/deposit.html.twig', [
             'form' => $form->createView(),

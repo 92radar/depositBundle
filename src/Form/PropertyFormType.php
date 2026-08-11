@@ -14,7 +14,9 @@ class PropertyFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('extrafields', IntegerType::class)
+            ->add('deposit', IntegerType::class, [
+                'mapped' => false,
+            ])
             ->add('save', SubmitType::class)
         ;
     }
