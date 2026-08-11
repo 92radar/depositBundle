@@ -21,7 +21,7 @@ interface PropertyInterface
             "rent",
             "charges",
             "services",
-            "deposit",
+            "extrafields",
             "availability",
             "description",
             "title",
