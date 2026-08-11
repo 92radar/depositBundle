@@ -18,7 +18,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "aintReallyDown\\DepositBundle\\": "src/"
+            "aintreallydown\\DepositBundle\\": "src/"
         }
     },
     "authors": [
