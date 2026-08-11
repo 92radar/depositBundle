@@ -1,6 +1,6 @@
 <?php
 
-namespace _92radar\DepositBundle\DependencyInjection;
+namespace aintreallydown\DepositBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -4,14 +4,14 @@ services:
         autoconfigure: true
         public: true
         
-    _92radar\DepositBundle\Controller\PropertyController:
+    aintreallydown\DepositBundle\Controller\PropertyController:
         arguments:
             $em: '@doctrine.orm.entity_manager'
         tags: ['controller.service_arguments']
         public: true
 
-    _92radar\DepositBundle\Security\Voter\PropertyVoter:
+    aintreallydown\DepositBundle\Security\Voter\PropertyVoter:
         tags: ['security.voter']
 
-    _92radar\DepositBundle\Form\PropertyFormType:
+    aintreallydown\DepositBundle\Form\PropertyFormType:
         tags: ['form.type']

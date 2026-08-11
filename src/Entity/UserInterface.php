@@ -1,8 +1,8 @@
 <?php
 
-namespace _92radar\DepositBundle\Entity;
+namespace aintreallydown\DepositBundle\Entity;
 
-use _92radar\DepositBundle\Entity;
+use aintreallydown\DepositBundle\Entity;
 
 interface UserInterface
 {

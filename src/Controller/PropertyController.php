@@ -1,10 +1,10 @@
 <?php
 
-namespace _92radar\DepositBundle\Controller;
+namespace aintreallydown\DepositBundle\Controller;
 
-use _92radar\DepositBundle\Entity\PropertyInterface;
+use aintreallydown\DepositBundle\Entity\PropertyInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use _92radar\DepositBundle\Form\PropertyFormType;
+use aintreallydown\DepositBundle\Form\PropertyFormType;
 use App\Security\Voter\PropertyVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

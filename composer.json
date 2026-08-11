@@ -1,5 +1,5 @@
 {
-    "name": "92radar/deposit-bundle",
+    "name": "aintreallydown/deposit-bundle",
     "description": "Gère le processus de dépôt de garantie pour 123Manzil",
     "type": "symfony-bundle",
     "require": {
@@ -18,7 +18,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "_92radar\\DepositBundle\\": "src/"
+            "aintReallyDown\\DepositBundle\\": "src/"
         }
     },
     "authors": [
