@@ -3,6 +3,7 @@
 namespace _92radar\DepositBundle\Controller;
 
 use _92radar\DepositBundle\Entity\PropertyInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use _92radar\DepositBundle\Form\PropertyFormType;
 use App\Security\Voter\PropertyVoter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +21,10 @@ class PropertyController extends AbstractController
 
     #[Route('/property/{uid}/deposit/', name: 'property.deposit', priority: 1)]
     #[IsGranted(PropertyVoter::EDIT, subject: 'property')]
-    public function deposit(PropertyInterface $property, Request $request): Response
+    public function deposit(
+    #[MapEntity(mapping: ['uid' => 'uid'])] PropertyInterface $property,
+    Request $request
+    ): Response
     {
         $uid = $property->getUid();
         $step = $property->getState();
