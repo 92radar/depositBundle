@@ -60,7 +60,7 @@ class PropertyController extends AbstractController
             $form->get('extrafields')->setData($max);
         }
 
-        return $this->render('property/deposit.html.twig', [
+        return $this->render('@DepositBundle/deposit.html.twig', [
             'form' => $form->createView(),
             'backlink' => $this->generateUrl('property.services', ['uid' => $uid]),
             'uid' => $uid,
