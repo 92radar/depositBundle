@@ -7,7 +7,6 @@ use aintreallydown\DepositBundle\Entity\UserInterface;
 
 interface PropertyInterface
 
-
 {
 
     public const STATES = [
