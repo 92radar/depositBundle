@@ -7,10 +7,10 @@
     <h1>{{ 'property.deposit.h1'|trans }}</h1>
 
     <zb-input
-        name="{{ field_name(form.extrafields) }}" 
-        value="{{ field_value(form.extrafields) }}"
+        name="{{ field_name(form.deposit) }}" 
+        value="{{ field_value(form.deposit) }}"
         type="number"
-        unit="€"
+        unit="{{ country.currency.symbol }}"
         placeholder='{{ "property.deposit.placeholder"|trans }}'
         required
     ></zb-input>

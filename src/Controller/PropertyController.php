@@ -42,6 +42,7 @@ class PropertyController extends AbstractController
         $extrafields = $property->getExtrafields();
 
 
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $extrafields['deposit'] = $form->get('deposit')->getData();
