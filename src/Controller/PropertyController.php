@@ -2,56 +2,65 @@
 
 namespace aintreallydown\DepositBundle\Controller;
 
-use aintreallydown\DepositBundle\Entity\PropertyInterface;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use aintreallydown\DepositBundle\Form\PropertyFormType;
-use App\Security\Voter\PropertyVoter;
+use aintreallydown\DepositBundle\Security\Voter\PropertyVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PropertyController extends AbstractController
 {
+    private const STATES = [
+        'address', 'infos', 'rooms', 'energy', 'furnished', 'equipments',
+        'benefits', 'rent', 'charges', 'services', 'extrafields',
+        'availability', 'description', 'title', 'images',
+    ];
+
     public function __construct(
         private EntityManagerInterface $em,
+        private string $propertyClass,
+        private array $methods,
     ) {}
 
     #[Route('/property/{uid}/deposit/', name: 'property.deposit', priority: 1)]
-    #[IsGranted(PropertyVoter::EDIT, subject: 'property')]
-    public function deposit(
-    #[MapEntity(class: \App\Entity\Property::class, mapping: ['uid' => 'uid'])] PropertyInterface $property,
-    Request $request
-    ): Response
+    public function deposit(string $uid, Request $request): Response
     {
-        $uid = $property->getUid();
-        $step = $property->getState();
+        $property = $this->em->getRepository($this->propertyClass)
+            ->findOneBy(['uid' => $uid]);
+
+        if ($property === null) {
+            throw new NotFoundHttpException('Property not found.');
+        }
+
+        $this->denyAccessUnlessGranted(PropertyVoter::EDIT, $property);
+
+        $step = $property->{$this->methods['get_state']}();
+
         $slug = 'deposit';
         $nextStep = 'availability';
-        $states = PropertyInterface::STATES;
+        $states = self::STATES;
 
         if ($step && array_search($step, $states) < array_search($slug, $states)) {
             return $this->redirectToRoute("property.$step", ['uid' => $uid]);
         }
 
-        $form = $this->createForm(PropertyFormType::class, $property);
+        $form = $this->createForm(PropertyFormType::class);
         $form->handleRequest($request);
 
-        $extrafields = $property->getExtrafields();
-
-
+        $extrafields = $property->{$this->methods['get_extrafields']}() ?? [];
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $extrafields['deposit'] = $form->get('deposit')->getData();
-            $property->setExtrafields($extrafields);
+            $property->{$this->methods['set_extrafields']}($extrafields);
 
             $isSave = $form->get('save')->isClicked();
 
             if ($step === $slug && !$isSave) {
-                $property->setState($nextStep);
+                $property->{$this->methods['set_state']}($nextStep);
             }
 
             $this->em->flush();
@@ -61,22 +70,17 @@ class PropertyController extends AbstractController
                 : $this->redirectToRoute("property.$nextStep", ['uid' => $uid]);
         }
 
-
-
-        $default = $property->getRent() - ($property->getCharges() ?? 0);
-       
+        $default = ($property->{$this->methods['get_rent']}()) - ($property->{$this->methods['get_charges']}());
         
+        $max = ($property->{$this->methods['is_furnished']}())
+        ? $default * 2 
+        : $default;
 
-        $max = $property->isFurnished() 
-            ? $default * 2
-            : $default;
-
-        $deposit = $default === null 
-            ? $max 
+        $deposit = $default === null
+            ? $max
             : $extrafields['deposit'] ?? null;
 
         $form->get('deposit')->setData($deposit);
-
 
         return $this->render('@DepositBundle/deposit.html.twig', [
             'form' => $form->createView(),

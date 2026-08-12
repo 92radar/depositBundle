@@ -3,14 +3,19 @@ services:
         autowire: true
         autoconfigure: true
         public: true
-        
+
     aintreallydown\DepositBundle\Controller\PropertyController:
         arguments:
             $em: '@doctrine.orm.entity_manager'
+            $propertyClass: '%deposit.property_class%'
+            $methods: '%deposit.methods%'
         tags: ['controller.service_arguments']
         public: true
 
     aintreallydown\DepositBundle\Security\Voter\PropertyVoter:
+        arguments:
+            $propertyClass: '%deposit.property_class%'
+            $methods: '%deposit.methods%'
         tags: ['security.voter']
 
     aintreallydown\DepositBundle\Form\PropertyFormType:

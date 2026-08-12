@@ -2,7 +2,6 @@
 
 namespace aintreallydown\DepositBundle\Form;
 
-use aintreallydown\DepositBundle\Entity\PropertyInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -24,7 +23,6 @@ class PropertyFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => PropertyInterface::class,
             'method' => 'PATCH',
         ]);
     }
