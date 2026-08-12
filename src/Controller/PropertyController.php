@@ -17,6 +17,7 @@ class PropertyController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $em,
+        private int $maxMultiplier
     ) {}
 
     #[Route('/property/{uid}/deposit/', name: 'property.deposit', priority: 1)]
@@ -64,7 +65,10 @@ class PropertyController extends AbstractController
 
 
         $default = $property->getRent() - ($property->getCharges() ?? 0);
-        $max = $property->isFurnished() ? $default * 2 : $default;
+        
+        $max = $property->isFurnished() 
+            ? $default * $this->maxMultiplier 
+            : $default;
 
         $deposit = $default === null 
             ? $max 

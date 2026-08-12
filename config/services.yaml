@@ -3,6 +3,8 @@ services:
         autowire: true
         autoconfigure: true
         public: true
+        bind:
+            $maxMultiplier: '%deposit.max_multiplier%'
         
     aintreallydown\DepositBundle\Controller\PropertyController:
         arguments:
