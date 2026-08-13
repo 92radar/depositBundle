@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 
 class PropertyController extends AbstractController
 {
@@ -19,11 +20,11 @@ class PropertyController extends AbstractController
     ) {}
 
     #[Route('/property/{uid}/deposit/', name: 'property.deposit', priority: 1)]
-    public function deposit(string $uid, Request $request): Response
+    public function deposit(
+        #[MapEntity(mapping: ['uid' => 'uid'])]
+        Property $property, 
+        Request $request): Response
     {
-        $property = $this->em->getRepository(Property::class)
-            ->findOneBy(['uid' => $uid]);
-
         if ($property === null) {
             throw new NotFoundHttpException('Property not found.');
         }
@@ -37,7 +38,7 @@ class PropertyController extends AbstractController
         $states = Property::STATES;
 
         if ($step && array_search($step, $states) < array_search($slug, $states)) {
-            return $this->redirectToRoute("property.$step", ['uid' => $uid]);
+            return $this->redirectToRoute("property.$step", ['uid' => $property->getUid()]);
         }
 
         $form = $this->createForm(PropertyFormType::class);
@@ -60,7 +61,7 @@ class PropertyController extends AbstractController
 
             return $isSave
                 ? $this->redirectToRoute('properties')
-                : $this->redirectToRoute("property.$nextStep", ['uid' => $uid]);
+                : $this->redirectToRoute("property.$nextStep", ['uid' => $property->getUid()]);
         }
 
         $default = $property->getRent() - $property->getCharges();
@@ -77,8 +78,8 @@ class PropertyController extends AbstractController
 
         return $this->render('@DepositBundle/deposit.html.twig', [
             'form' => $form->createView(),
-            'backlink' => $this->generateUrl('property.services', ['uid' => $uid]),
-            'uid' => $uid,
+            'backlink' => $this->generateUrl('property.services', ['uid' => $property->getUid()]),
+            'uid' => $property->getUid(),
             'max' => $max,
             'step' => $step,
             'current' => 4,
